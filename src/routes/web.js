@@ -9,4 +9,4 @@ const router = express.Router();
 router.get('/', getHomepage);
 router.get('/test', getTest);
 
-module.exports = router.;
+module.exports = router;

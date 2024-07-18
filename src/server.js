@@ -17,5 +17,5 @@ configViewEngine(app);
 app.use('/', webRoutes);
 
 app.listen(port, hostname, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server Is running on http://localhost:${port}`);
 });
