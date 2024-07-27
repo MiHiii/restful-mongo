@@ -8,6 +8,10 @@ const connection = require('./config/database');
 const port = process.env.PORT || 8888;
 const hostname = process.env.HOST_NAME;
 
+//config request body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // console.log('>>check env: ', process.env);
 
 //config view engine

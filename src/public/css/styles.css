@@ -31,3 +31,31 @@
   background-color: #04aa6d;
   color: white;
 }
+
+.form-add-new {
+  width: 500px;
+  margin: 0 auto;
+  padding-top: 50px;
+}
+
+.form-add-new legend {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.input-group {
+  padding: 20px;
+}
+
+.input-group label {
+  font-size: 20px;
+}
+
+button {
+  cursor: pointer;
+  margin: 20px;
+  padding: 10px 15px;
+  border: 1px solid #333;
+  border-radius: 5px;
+}

@@ -13,5 +13,27 @@
       <a href="#contact">Contact</a>
       <a href="#about">About</a>
     </div>
+    <div class="form-add-new">
+      <form action="/create-user" method="POST">
+        <fieldset>
+          <legend>Form add new users</legend>
+          <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" />
+          </div>
+          <div class="input-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" />
+          </div>
+          <div class="input-group">
+            <label for="city">City:</label>
+            <input type="city" id="city" name="city" />
+          </div>
+          <div>
+            <button>Save</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
   </body>
 </html>
