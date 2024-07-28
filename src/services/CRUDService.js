@@ -32,8 +32,18 @@ const updateUserById = async (id, userData) => {
     throw error;
   }
 };
+
+const deleteUserById = async (id) => {
+  try {
+    const query = 'DELETE FROM `Users` WHERE `id` = ?';
+    await connection.query(query, [id]);
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   getAllUsers,
   getUserById,
   updateUserById,
+  deleteUserById,
 };
