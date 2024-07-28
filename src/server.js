@@ -3,7 +3,7 @@ const express = require('express');
 const configViewEngine = require('./config/viewengine');
 const app = express();
 const webRoutes = require('./routes/web');
-const connection = require('./config/database');
+// const connection = require('./config/database');
 
 const port = process.env.PORT || 8888;
 const hostname = process.env.HOST_NAME;
