@@ -6,9 +6,19 @@ const {
   deleteUserById,
 } = require('../services/CRUDService');
 
+const User = require('../models/user.model');
+
 const getHomepage = async (req, res) => {
-  let results = await getAllUsers();
-  return res.render('home.ejs', { listUsers: results });
+  async function fetchData() {
+    try {
+      let results = await User.find({});
+      return res.render('home.ejs', { listUsers: results });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  fetchData();
 };
 
 const getTest = (req, res) => {
@@ -17,64 +27,57 @@ const getTest = (req, res) => {
 
 const getUpdatePage = async (req, res) => {
   const userId = req.params.userId;
-  console.log('>>req: ', req);
+  // console.log('>>req: ', req);
+
   try {
-    const user = await getUserById(userId);
-    if (user) {
-      res.render('edit.ejs', { user });
-    } else {
-      res.status(404).send('User not found');
+    const user = await User.findById(userId).exec();
+    // console.log('>>user: ', user);
+
+    if (!user) {
+      return res.status(404).send('User not found');
     }
-  } catch (error) {
+
+    res.render('edit.ejs', { user });
+  } catch (err) {
+    console.error('Error retrieving user data: ', err);
     res.status(500).send('Error retrieving user data');
   }
 };
 
 const postCreateUser = async (req, res) => {
   const { email, name, city } = req.body;
-  let post = { email: email, name: name, city: city };
-  /*
-  let query = connection.query(
-    'INSERT INTO Users SET ?',
-    post,
-    function (error, results, fields) {
-      if (error) {
-        throw error;
-      } else {
-        console.log('>>results: ', results); // Neat!
-        res.send('Ceated user successfully');
-      }
-    },
-  );
-  */
+  let user = { email: email, name: name, city: city };
 
-  //Promise query
-  let [results, fields] = await connection.query(
-    'INSERT INTO Users SET ?',
-    post,
-  );
-  // console.log('>>results: ', results); // Neat!
+  await User.create(user);
+
   res.send('Created user successfully');
 
-  //   const query = `INSERT INTO Users (email, name, city)
-  // VALUES (email, name, city);`
   // console.log('>>req.body: ', name, email, city );
 };
 
 const postUpdateUser = async (req, res) => {
+  // Destructure and validate request body
   const { id, email, name, city } = req.body;
-  let post = { email: email, name: name, city: city };
 
-  console.log('>>post: ', post);
-  console.log('>>id: ', id);
+  if (!id || !email || !name || !city) {
+    return res.status(400).send('All fields are required');
+  }
+
+  const query = { name, email, city };
+
+  // console.log('>>req.body: ', req.body);
 
   try {
-    await updateUserById(id, post);
-    // res.send('Update user successfully');
+    const result = await User.updateOne({ _id: id }, query);
+
+    if (result.nModified === 0) {
+      return res.status(404).send('User not found or no changes made');
+    }
+
     res.redirect('/');
   } catch (error) {
-    console.error('Error updating user: ', error);
-    res.status(500).send('Error updating user');
+    console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 };
 

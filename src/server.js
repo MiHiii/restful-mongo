@@ -3,7 +3,9 @@ const express = require('express');
 const configViewEngine = require('./config/viewengine');
 const app = express();
 const webRoutes = require('./routes/web');
-// const connection = require('./config/database');
+const connection = require('./config/database');
+const mongoose = require('mongoose');
+// const Kitten = require('./models/Kitten');
 
 const port = process.env.PORT || 8888;
 const hostname = process.env.HOST_NAME;
@@ -20,15 +22,20 @@ configViewEngine(app);
 //init router
 app.use('/', webRoutes);
 
-//test connection
-// connection.query(
-//   'SELECT * FROM `Users` WHERE `name` = "mihi"',
-//   function (err, results, fields) {
-//     console.log('>>results: ', results); // results contains rows returned by server
-//     // console.log('>>fields: ', fields); // fields contains extra meta data about results, if available
-//   },
-// );
+// const cat = new Kitten({ name: 'Mihi' });
+// cat.save();
 
-app.listen(port, hostname, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+//test connection
+// connection();
+
+//Connect
+(async () => {
+  try {
+    await connection();
+    app.listen(port, hostname, () => {
+      console.log(`Backend is running on http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.log('>>>Error connect to DB: ', error);
+  }
+})();

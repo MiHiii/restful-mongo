@@ -1,14 +1,7 @@
 const connection = require('../config/database');
-const { get } = require('../routes/web');
 
 const getAllUsers = async () => {
   let results = [];
-  try {
-    [results] = await connection.query('SELECT * FROM `Users`');
-  } catch (error) {
-    throw error;
-  }
-  return results;
 };
 
 const getUserById = async (id) => {
@@ -36,7 +29,7 @@ const updateUserById = async (id, userData) => {
 const deleteUserById = async (id) => {
   try {
     const query = 'DELETE FROM `Users` WHERE `id` = ?';
-    await connection.query(query, [id]);
+    // await connection.query(query, [id]);
   } catch (error) {
     throw error;
   }
