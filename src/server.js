@@ -3,6 +3,7 @@ const express = require('express');
 const configViewEngine = require('./config/viewengine');
 const app = express();
 const webRoutes = require('./routes/web');
+const apiRoutes = require('./routes/api');
 const connection = require('./config/database');
 const mongoose = require('mongoose');
 // const Kitten = require('./models/Kitten');
@@ -21,6 +22,7 @@ configViewEngine(app);
 
 //init router
 app.use('/', webRoutes);
+app.use('/v1/api/', apiRoutes);
 
 // const cat = new Kitten({ name: 'Mihi' });
 // cat.save();
