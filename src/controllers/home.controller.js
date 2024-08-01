@@ -87,7 +87,7 @@ const getCreatePage = (req, res) => {
 
 const postDeleteUser = async (req, res) => {
   const id = req.params.userId;
-  await deleteUserById(id);
+  await User.deleteOne({ _id: id });
   res.redirect('/');
 };
 
