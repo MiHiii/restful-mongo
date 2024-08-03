@@ -1,8 +1,6 @@
 const Customer = require('../models/customer.model');
-const {
-  uploadSingleFile,
-  uploadMultipleFiles,
-} = require('../services/fileService');
+const { createCustomerService } = require('../services/customerService');
+const { uploadSingleFile } = require('../services/fileService');
 
 const getAllCustomers = async (req, res) => {
   try {
@@ -16,42 +14,33 @@ const getAllCustomers = async (req, res) => {
   }
 };
 
-// const postCreateCustomer = async (req, res) => {
-//   let {name,}
-// };
-
-const postUploadSingleFile = async (req, res) => {
-  console.log('>>file: ', req.files);
+const postCreateCustomer = async (req, res) => {
+  let { name, address, phone, email, description } = req.body;
+  let imageUrl = '';
+  // console.log('>>file: ', req.files);
   if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send('No files were uploaded');
+  } else {
+    let result = await uploadSingleFile(req.files.image);
+    imageUrl = result.path;
   }
-  let result = await uploadSingleFile(req.files.image);
+  let customerData = {
+    name: name,
+    address: address,
+    phone: phone,
+    email: email,
+    description: description,
+    image: imageUrl,
+  };
+  console.log('>>image: ', imageUrl);
+  await createCustomerService(customerData);
   return res.status(200).json({
     errorCode: 0,
-    data: result,
+    message: 'Customer created successfully',
+    data: customerData,
   });
-};
-
-const postUploadMultipleFile = async (req, res) => {
-  console.log('>>file: ', req.files);
-  if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send('No files were uploaded');
-  }
-
-  try {
-    let result = await uploadMultipleFiles(req.files.image);
-    return res.status(200).json({
-      errorCode: 0,
-      data: result,
-    });
-  } catch (error) {
-    console.log('>>upload error: ', error);
-    return res.status(500).send('Error uploading files');
-  }
 };
 
 module.exports = {
   getAllCustomers,
-  postUploadSingleFile,
-  postUploadMultipleFile,
+  postCreateCustomer,
 };
