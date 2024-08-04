@@ -10,4 +10,14 @@ const createCustomerService = async (customerData) => {
   }
 };
 
-module.exports = { createCustomerService };
+const createArrayCustomerService = async (customersData) => {
+  try {
+    let results = await Customer.create(customersData);
+    return results;
+  } catch (error) {
+    console.log('>>error: ', error);
+    return null;
+  }
+};
+
+module.exports = { createCustomerService, createArrayCustomerService };
