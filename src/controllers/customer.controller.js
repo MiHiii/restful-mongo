@@ -2,6 +2,7 @@ const Customer = require('../models/customer.model');
 const {
   createCustomerService,
   createArrayCustomerService,
+  deleteCustomerService,
 } = require('../services/customerService');
 const { uploadSingleFile } = require('../services/fileService');
 
@@ -85,9 +86,26 @@ const putUpdateCustomer = async (req, res) => {
   });
 };
 
+const deleteCustomer = async (req, res) => {
+  let customerId = req.params.customerId;
+  let result = await deleteCustomerService(customerId);
+  if (result) {
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Customer deleted successfully',
+    });
+  } else {
+    return res.status(500).json({
+      errorCode: -1,
+      message: 'Error deleting customer',
+    });
+  }
+};
+
 module.exports = {
   getAllCustomers,
   postCreateCustomer,
   postCreateArrayCustomer,
   putUpdateCustomer,
+  deleteCustomer,
 };

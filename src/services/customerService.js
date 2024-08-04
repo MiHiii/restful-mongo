@@ -20,4 +20,18 @@ const createArrayCustomerService = async (customersData) => {
   }
 };
 
-module.exports = { createCustomerService, createArrayCustomerService };
+const deleteCustomerService = async (customerId) => {
+  try {
+    let result = await Customer.deleteById(customerId);
+    return result;
+  } catch (error) {
+    console.log('>>error: ', error);
+    return null;
+  }
+};
+
+module.exports = {
+  createCustomerService,
+  createArrayCustomerService,
+  deleteCustomerService,
+};
