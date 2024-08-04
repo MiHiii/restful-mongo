@@ -59,8 +59,35 @@ const postCreateArrayCustomer = async (req, res) => {
   }
 };
 
+const putUpdateCustomer = async (req, res) => {
+  let customerId = req.params.customerId;
+  let { name, address, phone, email, description } = req.body;
+  let imageUrl = '';
+  if (!req.files || Object.keys(req.files).length === 0) {
+  } else {
+    let result = await uploadSingleFile(req.files.image);
+    imageUrl = result.path;
+  }
+  let customerData = {
+    name: name,
+    address: address,
+    phone: phone,
+    email: email,
+    description: description,
+    image: imageUrl,
+  };
+  console.log(customerData);
+  await Customer.findByIdAndUpdate(customerId, customerData);
+  return res.status(200).json({
+    errorCode: 0,
+    message: 'Customer updated successfully',
+    data: customerData,
+  });
+};
+
 module.exports = {
   getAllCustomers,
   postCreateCustomer,
   postCreateArrayCustomer,
+  putUpdateCustomer,
 };
