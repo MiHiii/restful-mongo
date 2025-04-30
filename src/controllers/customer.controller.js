@@ -3,21 +3,29 @@ const {
   createCustomerService,
   createArrayCustomerService,
   deleteCustomerService,
+  getAllCustomersService,
 } = require('../services/customerService');
 const { uploadSingleFile } = require('../services/fileService');
 
 const getAllCustomers = async (req, res) => {
+  let { limit, page, name } = req.query;
+  limit = parseInt(limit) || 10; // Giá trị mặc định cho limit
+  page = parseInt(page) || 1; // Giá trị mặc định cho page
+
   try {
-    let results = await Customer.find({});
-    res.render('customer/home.ejs', { customers: results });
+    let results = await getAllCustomersService(limit, page, name);
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Success',
+      data: results,
+    });
   } catch (error) {
-    console.log('>>error: ', error);
-    return res
-      .status(500)
-      .json({ errorCode: 1, message: 'Error fetching customers' });
+    return res.status(500).json({
+      errorCode: 1,
+      message: 'Error fetching customers',
+    });
   }
 };
-
 const postCreateCustomer = async (req, res) => {
   let { name, address, phone, email, description } = req.body;
   let imageUrl = '';

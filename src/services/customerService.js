@@ -30,8 +30,29 @@ const deleteCustomerService = async (customerId) => {
   }
 };
 
+const getAllCustomersService = async (limit, page, name) => {
+  try {
+    let result = null;
+    let offset = limit * (page - 1);
+
+    if (name) {
+      result = await Customer.find({ name: { $regex: name, $options: 'i' } })
+        .skip(offset)
+        .limit(limit)
+        .exec();
+    } else {
+      result = await Customer.find({}).skip(offset).limit(limit).exec();
+    }
+
+    return result;
+  } catch (error) {
+    console.log('>>error: ', error);
+    return null;
+  }
+};
 module.exports = {
   createCustomerService,
   createArrayCustomerService,
   deleteCustomerService,
+  getAllCustomersService,
 };

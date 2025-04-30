@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 // const multer = require('multer');
 const fileUpload = require('express-fileupload');
-const configViewEngine = require('./config/viewengine');
+const configViewEngine = require('./config/viewEngine');
 const app = express();
 const webRoutes = require('./routes/web');
 const apiRoutes = require('./routes/api');
